@@ -637,8 +637,10 @@ body {
 // When you host this, point SERVER_URL to your server
 // For local dev: 'http://localhost:3000'
 // For production: 'https://your-server.com'
-const SERVER_URL = window.location.origin;
-
+const SERVER_URL = window.location.origin.includes('localhost') 
+  ? 'http://localhost:3000' 
+  : window.location.origin;
+  
 const VAPID_PUBLIC_KEY = 'BDum4QWv0OFl4X-zAEu5I1_rF3B_GxQ7f7mx0BEkULmcznlA6FlsF3L9qNHvXn29HXU5cuAyzOXh_qCZJflqraY';
 
 // ===== STATE =====
