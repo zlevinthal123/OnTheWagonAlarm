@@ -8,7 +8,8 @@ const path = require('path');
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: '*' }));
+app.get('/health', (req, res) => res.json({ ok: true }));
 app.use(express.static('.'));
 
 // ---- VAPID KEYS (pre-generated — keep private key secret!) ----
