@@ -1,0 +1,1157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Banged Up">
+<meta name="theme-color" content="#0c0a08">
+<title>🍺 Banged Up Alarm</title>
+
+<!-- PWA manifest inline -->
+<link rel="manifest" href="data:application/json;charset=utf-8,{
+  %22name%22:%22Banged Up Alarm%22,
+  %22short_name%22:%22Banged Up%22,
+  %22start_url%22:%22/%22,
+  %22display%22:%22standalone%22,
+  %22background_color%22:%22%230c0a08%22,
+  %22theme_color%22:%22%23f59e0b%22,
+  %22icons%22:[{%22src%22:%22/icon.png%22,%22sizes%22:%22192x192%22,%22type%22:%22image/png%22}]
+}">
+
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --amber: #f59e0b;
+  --amber-glow: rgba(245,158,11,0.35);
+  --red: #ef4444;
+  --green: #22c55e;
+  --bg: #0c0a08;
+  --surface: #161210;
+  --surface2: #1e1a16;
+  --border: #2c2520;
+  --text: #f5f0eb;
+  --muted: #6b5d4f;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: -webkit-fill-available;
+}
+
+/* ===== SCREENS ===== */
+.screen {
+  display: none;
+  flex-direction: column;
+  height: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding-top: max(20px, var(--safe-top));
+  padding-bottom: max(20px, var(--safe-bottom));
+  padding-left: 18px;
+  padding-right: 18px;
+  gap: 14px;
+  align-items: center;
+}
+.screen.active { display: flex; }
+
+/* ===== HEADER ===== */
+.app-header {
+  text-align: center;
+  padding: 10px 0 4px;
+  flex-shrink: 0;
+  width: 100%;
+}
+
+.app-header h1 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(2.8rem, 12vw, 5rem);
+  letter-spacing: 0.06em;
+  line-height: 0.95;
+  color: var(--amber);
+  filter: drop-shadow(0 0 24px var(--amber-glow));
+}
+
+.app-header .tagline {
+  color: var(--muted);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-top: 6px;
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 18px 16px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.card-label {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+/* ===== INPUTS ===== */
+.input-field {
+  width: 100%;
+  background: var(--surface2);
+  border: 1.5px solid var(--border);
+  border-radius: 12px;
+  padding: 14px 16px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  -webkit-appearance: none;
+  margin-bottom: 10px;
+}
+
+.input-field:focus {
+  border-color: var(--amber);
+  box-shadow: 0 0 0 3px var(--amber-glow);
+}
+
+.input-field::placeholder { color: var(--muted); }
+
+.input-code {
+  text-transform: uppercase;
+  letter-spacing: 0.25em;
+  font-size: 1.4rem;
+  font-family: 'Bebas Neue', sans-serif;
+  text-align: center;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 15px;
+  border: none;
+  border-radius: 14px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.25rem;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition: transform 0.12s, filter 0.12s, box-shadow 0.12s;
+  -webkit-appearance: none;
+}
+
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: var(--amber);
+  color: #0c0a08;
+  box-shadow: 0 4px 20px var(--amber-glow);
+}
+.btn-primary:active { filter: brightness(0.9); }
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.9rem;
+  padding: 12px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  width: 100%;
+  max-width: 400px;
+}
+.divider::before, .divider::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+/* ===== MAIN SCREEN ===== */
+#mainScreen {
+  justify-content: flex-start;
+}
+
+.crew-banner {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 12px 16px;
+  width: 100%;
+  max-width: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.crew-info .crew-name {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.3rem;
+  color: var(--amber);
+  letter-spacing: 0.05em;
+  line-height: 1;
+}
+
+.crew-info .crew-meta {
+  font-size: 0.72rem;
+  color: var(--muted);
+  margin-top: 2px;
+  letter-spacing: 0.08em;
+}
+
+.share-btn {
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 8px 14px;
+  color: var(--amber);
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.share-btn:active { background: var(--border); }
+
+/* ===== THE BIG BUTTON ===== */
+.alarm-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 0;
+  width: 100%;
+}
+
+.alarm-btn {
+  position: relative;
+  width: min(230px, 58vw);
+  height: min(230px, 58vw);
+  border-radius: 50%;
+  border: none;
+  background: radial-gradient(circle at 38% 32%, #ff7c45, #c0392b 65%, #7b0f0f);
+  box-shadow:
+    0 0 0 10px rgba(192,57,43,0.15),
+    0 0 0 20px rgba(192,57,43,0.07),
+    0 10px 50px rgba(192,57,43,0.5);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  transition: transform 0.12s, box-shadow 0.12s;
+  animation: alarmPulse 3s ease-in-out infinite;
+  -webkit-appearance: none;
+}
+
+.alarm-btn:active {
+  transform: scale(0.93) !important;
+  animation: none;
+  box-shadow: 0 0 0 6px rgba(192,57,43,0.2), 0 4px 20px rgba(192,57,43,0.3);
+}
+
+.alarm-btn .alarm-icon { font-size: clamp(2.8rem, 10vw, 4rem); line-height: 1; }
+.alarm-btn .alarm-line1,
+.alarm-btn .alarm-line2 {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: clamp(1.1rem, 4.5vw, 1.5rem);
+  letter-spacing: 0.1em;
+  color: white;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.5);
+  line-height: 1;
+}
+
+.alarm-btn .alarm-sub {
+  font-size: clamp(0.55rem, 2vw, 0.7rem);
+  color: rgba(255,255,255,0.6);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+@keyframes alarmPulse {
+  0%, 100% {
+    box-shadow: 0 0 0 10px rgba(192,57,43,0.15), 0 0 0 20px rgba(192,57,43,0.07), 0 10px 50px rgba(192,57,43,0.5);
+  }
+  50% {
+    box-shadow: 0 0 0 14px rgba(192,57,43,0.22), 0 0 0 28px rgba(192,57,43,0.1), 0 10px 60px rgba(192,57,43,0.65);
+  }
+}
+
+/* Cooldown ring */
+.cooldown-ring {
+  display: none;
+  width: 100%;
+  max-width: 260px;
+}
+
+.cooldown-track {
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.cooldown-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--amber), #f97316);
+  border-radius: 2px;
+  width: 100%;
+  transition: width linear;
+}
+
+.cooldown-label {
+  text-align: center;
+  font-size: 0.7rem;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+  margin-top: 5px;
+}
+
+/* ===== MEMBERS ===== */
+.members-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 14px 16px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.members-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.members-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+}
+
+.member-count {
+  font-size: 0.72rem;
+  color: var(--muted);
+  background: var(--surface2);
+  border-radius: 20px;
+  padding: 2px 8px;
+}
+
+.member-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.member-chip {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface2);
+  border-radius: 20px;
+  padding: 5px 12px;
+  font-size: 0.82rem;
+  border: 1px solid var(--border);
+  animation: chipIn 0.2s ease;
+}
+
+@keyframes chipIn { from { opacity: 0; transform: scale(0.85); } to { opacity: 1; transform: scale(1); } }
+
+.member-chip.you { border-color: var(--amber); color: var(--amber); }
+
+.dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 5px var(--green);
+  flex-shrink: 0;
+}
+.dot.away { background: var(--muted); box-shadow: none; }
+
+/* ===== LOG ===== */
+.log-card {
+  display: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 14px 16px;
+  width: 100%;
+  max-width: 400px;
+}
+
+.log-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.9rem;
+  letter-spacing: 0.15em;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.log-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  max-height: 140px;
+  overflow-y: auto;
+}
+
+.log-entry {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  padding: 8px 10px;
+  background: var(--surface2);
+  border-radius: 10px;
+  border-left: 2px solid var(--amber);
+  animation: slideIn 0.25s ease;
+}
+
+@keyframes slideIn { from { opacity: 0; transform: translateX(-8px); } to { opacity: 1; transform: translateX(0); } }
+
+.log-time { color: var(--muted); font-size: 0.68rem; margin-left: auto; white-space: nowrap; }
+
+/* ===== NOTIF PERMISSION BANNER ===== */
+.notif-banner {
+  display: none;
+  background: linear-gradient(135deg, #1a1200, #2a1e00);
+  border: 1px solid var(--amber);
+  border-radius: 14px;
+  padding: 12px 14px;
+  width: 100%;
+  max-width: 400px;
+  gap: 10px;
+  align-items: flex-start;
+}
+
+.notif-banner.show { display: flex; }
+
+.notif-banner-text {
+  font-size: 0.82rem;
+  color: var(--text);
+  line-height: 1.4;
+  flex: 1;
+}
+
+.notif-banner-text strong { color: var(--amber); }
+
+.notif-allow-btn {
+  background: var(--amber);
+  color: #0c0a08;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 12px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: filter 0.15s;
+}
+.notif-allow-btn:active { filter: brightness(0.9); }
+
+/* ===== TOAST ===== */
+.toast {
+  position: fixed;
+  bottom: max(24px, var(--safe-bottom));
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 11px 20px;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  z-index: 2000;
+  transition: transform 0.3s cubic-bezier(.175,.885,.32,1.275);
+  white-space: nowrap;
+  max-width: 90vw;
+  text-align: center;
+  pointer-events: none;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ===== STATUS INDICATOR ===== */
+.status-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  color: var(--muted);
+  padding: 4px 0;
+}
+
+.status-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--muted);
+}
+.status-dot.connected { background: var(--green); box-shadow: 0 0 5px var(--green); }
+.status-dot.error { background: var(--red); }
+
+/* ===== NOTIF STATUS ===== */
+.notif-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.7rem;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+}
+
+.notif-icon { font-size: 0.9rem; }
+</style>
+</head>
+<body>
+
+<!-- ===== SETUP SCREEN ===== -->
+<div class="screen active" id="setupScreen">
+  <div class="app-header">
+    <h1>🍺 Banged Up<br>Alarm</h1>
+    <p class="tagline">Alert your crew when it's going off</p>
+  </div>
+
+  <div class="card" style="max-width:400px;width:100%">
+    <div class="card-label">👤 Your Name</div>
+    <input type="text" class="input-field" id="nameInput" placeholder="What do they call you?" maxlength="20" autocomplete="off">
+  </div>
+
+  <div class="card" style="max-width:400px;width:100%">
+    <div class="card-label">🍻 Start a New Crew</div>
+    <input type="text" class="input-field" id="newGroupInput" placeholder="e.g. The Lads, Friday Squad..." maxlength="28" autocomplete="off">
+    <button class="btn btn-primary" id="createBtn">🍺 Create Crew</button>
+  </div>
+
+  <div class="divider" style="max-width:400px">OR JOIN EXISTING CREW</div>
+
+  <div class="card" style="max-width:400px;width:100%">
+    <div class="card-label">🔑 Enter Crew Code</div>
+    <input type="text" class="input-field input-code" id="joinCodeInput" placeholder="ABC123" maxlength="6" autocomplete="off" inputmode="text">
+    <button class="btn btn-primary" id="joinBtn">Join Crew</button>
+  </div>
+</div>
+
+<!-- ===== MAIN SCREEN ===== -->
+<div class="screen" id="mainScreen">
+
+  <div class="crew-banner">
+    <div class="crew-info">
+      <div class="crew-name" id="crewNameDisplay">The Lads</div>
+      <div class="crew-meta">Code: <span id="crewCodeDisplay" style="color:var(--amber);letter-spacing:0.15em;font-weight:700">------</span></div>
+    </div>
+    <button class="share-btn" id="shareBtn">📤 Share</button>
+  </div>
+
+  <!-- Notification permission banner -->
+  <div class="notif-banner" id="notifBanner">
+    <div class="notif-banner-text">
+      <strong>🔔 Enable push notifications</strong><br>
+      So your crew can alert you when they're getting banged up — even when the app is closed.
+    </div>
+    <button class="notif-allow-btn" id="notifAllowBtn">Enable</button>
+  </div>
+
+  <div class="alarm-wrap">
+    <button class="alarm-btn" id="alarmBtn">
+      <span class="alarm-icon">🍺</span>
+      <span class="alarm-line1">I'M GETTING</span>
+      <span class="alarm-line2">BANGED UP</span>
+      <span class="alarm-sub">tap to alert crew</span>
+    </button>
+
+    <div class="cooldown-ring" id="cooldownRing">
+      <div class="cooldown-track">
+        <div class="cooldown-fill" id="cooldownFill"></div>
+      </div>
+      <div class="cooldown-label" id="cooldownLabel">Steady on...</div>
+    </div>
+
+    <div class="status-bar">
+      <div class="status-dot" id="statusDot"></div>
+      <span id="statusText">Connecting...</span>
+      <span style="margin-left:8px">•</span>
+      <span class="notif-icon" id="notifIcon">🔕</span>
+      <span id="notifText" style="font-size:0.7rem;color:var(--muted)">Notifications off</span>
+    </div>
+  </div>
+
+  <div class="members-card">
+    <div class="members-header">
+      <div class="members-title">🟢 Crew</div>
+      <div class="member-count" id="memberCount">0 online</div>
+    </div>
+    <div class="member-grid" id="memberGrid">
+      <div style="color:var(--muted);font-size:0.82rem;width:100%">Share your code to get the crew in!</div>
+    </div>
+  </div>
+
+  <div class="log-card" id="logCard">
+    <div class="log-title">📣 Alert History</div>
+    <div class="log-list" id="logList"></div>
+  </div>
+
+  <button class="btn btn-ghost" id="leaveBtn" style="max-width:400px">Leave Crew</button>
+
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ===== CONFIG =====
+// When you host this, point SERVER_URL to your server
+// For local dev: 'http://localhost:3000'
+// For production: 'https://your-server.com'
+const SERVER_URL = window.location.origin;
+
+const VAPID_PUBLIC_KEY = 'BDum4QWv0OFl4X-zAEu5I1_rF3B_GxQ7f7mx0BEkULmcznlA6FlsF3L9qNHvXn29HXU5cuAyzOXh_qCZJflqraY';
+
+// ===== STATE =====
+let myName = '';
+let groupCode = '';
+let groupName = '';
+let pushSubscription = null;
+let pollInterval = null;
+let cooldownActive = false;
+let members = [];
+let logEntries = [];
+
+// Load from sessionStorage
+try {
+  const saved = sessionStorage.getItem('banged_up_session');
+  if (saved) {
+    const s = JSON.parse(saved);
+    myName = s.myName || '';
+    groupCode = s.groupCode || '';
+    groupName = s.groupName || '';
+  }
+} catch(e) {}
+
+// ===== UTILS =====
+function genCode() {
+  return Math.random().toString(36).substring(2,8).toUpperCase();
+}
+
+function saveSession() {
+  try { sessionStorage.setItem('banged_up_session', JSON.stringify({ myName, groupCode, groupName })); } catch(e) {}
+}
+
+function showToast(msg, dur = 3000) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => t.classList.remove('show'), dur);
+}
+
+function vibrate(pattern) {
+  try { navigator.vibrate && navigator.vibrate(pattern); } catch(e) {}
+}
+
+function formatTime(d = new Date()) {
+  return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+function urlBase64ToUint8Array(base64String) {
+  const padding = '='.repeat((4 - base64String.length % 4) % 4);
+  const base64 = (base64String + padding).replace(/-/g, '+').replace(/_/g, '/');
+  const rawData = atob(base64);
+  return Uint8Array.from([...rawData].map(c => c.charCodeAt(0)));
+}
+
+// ===== SERVICE WORKER + PUSH =====
+async function registerSW() {
+  if (!('serviceWorker' in navigator)) return null;
+  try {
+    // Inline service worker as blob URL
+    const swCode = `
+      self.addEventListener('push', function(e) {
+        const d = e.data ? e.data.json() : {};
+        e.waitUntil(self.registration.showNotification(d.title || '🍺 Banged Up!', {
+          body: d.body || 'Someone is getting banged up!',
+          icon: d.icon,
+          vibrate: [200,100,200,100,400],
+          tag: 'banged-up',
+          renotify: true,
+          requireInteraction: false,
+          data: { url: d.url || '/' }
+        }));
+      });
+      self.addEventListener('notificationclick', function(e) {
+        e.notification.close();
+        e.waitUntil(clients.matchAll({type:'window'}).then(list => {
+          for (let c of list) { if ('focus' in c) return c.focus(); }
+          if (clients.openWindow) return clients.openWindow('/');
+        }));
+      });
+    `;
+    const blob = new Blob([swCode], { type: 'application/javascript' });
+    const swUrl = URL.createObjectURL(blob);
+    
+    // Service workers must be same-origin, so we need the real sw.js file
+    // Fall back to long-polling for cross-origin / no SW scenarios
+    const reg = await navigator.serviceWorker.register('/sw.js').catch(() => null);
+    return reg;
+  } catch(e) {
+    return null;
+  }
+}
+
+async function subscribeToPush(swReg) {
+  if (!swReg) return null;
+  try {
+    const existing = await swReg.pushManager.getSubscription();
+    if (existing) return existing;
+    const sub = await swReg.pushManager.subscribe({
+      userVisibleOnly: true,
+      applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY)
+    });
+    return sub;
+  } catch(e) {
+    return null;
+  }
+}
+
+async function requestNotifications() {
+  if (!('Notification' in window)) return 'unsupported';
+  if (Notification.permission === 'granted') return 'granted';
+  if (Notification.permission === 'denied') return 'denied';
+  const result = await Notification.requestPermission();
+  return result;
+}
+
+function updateNotifStatus(granted) {
+  const icon = document.getElementById('notifIcon');
+  const text = document.getElementById('notifText');
+  const banner = document.getElementById('notifBanner');
+  if (granted) {
+    icon.textContent = '🔔';
+    text.textContent = 'Notifications on';
+    text.style.color = 'var(--green)';
+    banner.classList.remove('show');
+  } else {
+    icon.textContent = '🔕';
+    text.textContent = 'Notifications off';
+    text.style.color = 'var(--muted)';
+    if (Notification.permission !== 'denied') {
+      banner.classList.add('show');
+    }
+  }
+}
+
+function updateConnectionStatus(connected) {
+  const dot = document.getElementById('statusDot');
+  const text = document.getElementById('statusText');
+  if (connected) {
+    dot.className = 'status-dot connected';
+    text.textContent = `In crew as ${myName}`;
+  } else {
+    dot.className = 'status-dot error';
+    text.textContent = 'Reconnecting...';
+  }
+}
+
+// ===== API CALLS (to your Node server) =====
+async function apiCreateGroup(code, name) {
+  try {
+    const r = await fetch(`${SERVER_URL}/group/create`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, groupName: name })
+    });
+    return r.ok ? await r.json() : null;
+  } catch(e) { return null; }
+}
+
+async function apiJoinGroup(code, name, subscription) {
+  try {
+    const r = await fetch(`${SERVER_URL}/group/join`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, memberName: name, subscription: subscription ? JSON.parse(JSON.stringify(subscription)) : null })
+    });
+    return r.ok ? await r.json() : null;
+  } catch(e) { return null; }
+}
+
+async function apiGetGroup(code) {
+  try {
+    const r = await fetch(`${SERVER_URL}/group/${code}`);
+    return r.ok ? await r.json() : null;
+  } catch(e) { return null; }
+}
+
+async function apiFireAlarm(code, fromName) {
+  try {
+    const r = await fetch(`${SERVER_URL}/alert`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, fromName })
+    });
+    return r.ok ? await r.json() : null;
+  } catch(e) { return null; }
+}
+
+async function apiLeave(code, name) {
+  try {
+    await fetch(`${SERVER_URL}/group/leave`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ code, memberName: name })
+    });
+  } catch(e) {}
+}
+
+// ===== POLL for member updates =====
+function startPolling() {
+  if (pollInterval) clearInterval(pollInterval);
+  pollInterval = setInterval(async () => {
+    const data = await apiGetGroup(groupCode);
+    if (data) {
+      members = data.members || [];
+      renderMembers();
+      updateConnectionStatus(true);
+    } else {
+      updateConnectionStatus(false);
+    }
+  }, 8000);
+}
+
+// ===== RENDER =====
+function renderMembers() {
+  const grid = document.getElementById('memberGrid');
+  const count = document.getElementById('memberCount');
+  if (!members.length) {
+    grid.innerHTML = '<div style="color:var(--muted);font-size:0.82rem;width:100%">Share your code to get the crew in!</div>';
+    count.textContent = '0 online';
+    return;
+  }
+  count.textContent = `${members.length} online`;
+  grid.innerHTML = members.map(name => {
+    const isYou = name === myName;
+    return `<div class="member-chip ${isYou ? 'you' : ''}">
+      <div class="dot"></div>
+      ${name}${isYou ? ' <span style="font-size:0.65rem;opacity:0.7">(you)</span>' : ''}
+    </div>`;
+  }).join('');
+}
+
+function addLogEntry(name) {
+  const entry = { name, time: formatTime() };
+  logEntries.unshift(entry);
+  const logCard = document.getElementById('logCard');
+  const logList = document.getElementById('logList');
+  logCard.style.display = 'block';
+  const el = document.createElement('div');
+  el.className = 'log-entry';
+  el.innerHTML = `🍺 <span><strong>${name}</strong> got banged up</span><span class="log-time">${entry.time}</span>`;
+  logList.prepend(el);
+  if (logList.children.length > 15) logList.lastElementChild.remove();
+}
+
+// ===== BROADCAST CHANNEL (cross-tab in same browser) =====
+let bc = null;
+function setupBroadcast() {
+  if (!window.BroadcastChannel) return;
+  if (bc) bc.close();
+  bc = new BroadcastChannel('banged_up_' + groupCode);
+  bc.onmessage = (e) => {
+    if (e.data.type === 'ALERT' && e.data.from !== myName) {
+      showInAppAlert(e.data.from);
+    } else if (e.data.type === 'MEMBER_UPDATE') {
+      members = e.data.members;
+      renderMembers();
+    }
+  };
+}
+
+function bcBroadcast(msg) {
+  if (bc) bc.postMessage(msg);
+}
+
+// ===== IN-APP ALERT (shown when app is open) =====
+function showInAppAlert(fromName) {
+  vibrate([200, 100, 200, 100, 400]);
+  playSound();
+  addLogEntry(fromName);
+
+  // Show a prominent in-app notification since the overlay was removed
+  const t = document.getElementById('toast');
+  t.innerHTML = `🍺 <strong>${fromName}</strong> is getting banged up! Time to get on the wagon! 🛒`;
+  t.style.maxWidth = '88vw';
+  t.style.padding = '14px 20px';
+  t.style.fontSize = '0.9rem';
+  t.style.background = '#1a0f00';
+  t.style.borderColor = 'var(--amber)';
+  t.style.color = 'var(--text)';
+  t.classList.add('show');
+  clearTimeout(t._timer);
+  t._timer = setTimeout(() => {
+    t.classList.remove('show');
+    t.style = '';
+  }, 6000);
+}
+
+function playSound() {
+  try {
+    const ctx = new (window.AudioContext || window.webkitAudioContext)();
+    [[523,0],[659,0.13],[784,0.26],[659,0.39],[784,0.52]].forEach(([f,t]) => {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.connect(g); g.connect(ctx.destination);
+      o.frequency.value = f; o.type = 'square';
+      g.gain.setValueAtTime(0.12, ctx.currentTime + t);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + t + 0.1);
+      o.start(ctx.currentTime + t);
+      o.stop(ctx.currentTime + t + 0.15);
+    });
+  } catch(e) {}
+}
+
+// ===== COOLDOWN =====
+function startCooldown(secs = 15) {
+  cooldownActive = true;
+  const ring = document.getElementById('cooldownRing');
+  const fill = document.getElementById('cooldownFill');
+  const label = document.getElementById('cooldownLabel');
+  ring.style.display = 'block';
+  fill.style.transition = 'none';
+  fill.style.width = '100%';
+  let remaining = secs;
+  const tick = setInterval(() => {
+    remaining--;
+    label.textContent = `Steady on... ${remaining}s`;
+    if (remaining <= 0) {
+      clearInterval(tick);
+      cooldownActive = false;
+      ring.style.display = 'none';
+    }
+  }, 1000);
+  setTimeout(() => {
+    fill.style.transition = `width ${secs}s linear`;
+    fill.style.width = '0%';
+  }, 50);
+}
+
+// ===== SHARE =====
+async function shareCode() {
+  const shareData = {
+    title: '🍺 Banged Up Alarm',
+    text: `Join my crew "${groupName}" on Banged Up Alarm! Use code: ${groupCode}`,
+    url: `${window.location.origin}${window.location.pathname}?code=${groupCode}`
+  };
+
+  // Pre-fill join code from URL
+  const url = new URL(window.location.href);
+  url.searchParams.set('code', groupCode);
+  shareData.url = url.toString();
+
+  if (navigator.share) {
+    try { await navigator.share(shareData); return; } catch(e) {}
+  }
+
+  try {
+    await navigator.clipboard.writeText(shareData.url);
+    showToast(`📋 Link copied! Share it with your crew 🍺`);
+  } catch(e) {
+    showToast(`Code: ${groupCode} — Share this with your crew!`, 5000);
+  }
+}
+
+// ===== JOIN FLOW =====
+async function joinCrewFlow(code, name, gName, isNew) {
+  myName = name;
+  groupCode = code;
+  groupName = gName;
+  saveSession();
+
+  // Register SW and push
+  let swReg = null;
+  try { swReg = await registerSW(); } catch(e) {}
+
+  const permission = Notification.permission;
+  let sub = null;
+  if (permission === 'granted' && swReg) {
+    sub = await subscribeToPush(swReg);
+    pushSubscription = sub;
+  }
+
+  // Create group if new
+  if (isNew) {
+    await apiCreateGroup(code, gName);
+  }
+
+  // Join group on server
+  const result = await apiJoinGroup(code, name, sub);
+
+  if (result) {
+    groupName = result.groupName || gName;
+    members = result.members || [name];
+  } else {
+    members = [name];
+    // Offline mode - BroadcastChannel only
+    showToast('⚠️ Server unreachable - cross-device alerts disabled', 5000);
+  }
+
+  // Update UI
+  document.getElementById('crewNameDisplay').textContent = groupName;
+  document.getElementById('crewCodeDisplay').textContent = groupCode;
+  updateNotifStatus(permission === 'granted');
+  updateConnectionStatus(!!result);
+  renderMembers();
+
+  // Setup realtime
+  setupBroadcast();
+  startPolling();
+
+  // Auto-fill URL with code for easy sharing
+  try {
+    const newUrl = new URL(window.location.href);
+    newUrl.searchParams.set('code', groupCode);
+    window.history.replaceState({}, '', newUrl);
+  } catch(e) {}
+
+  showScreen('mainScreen');
+  showToast(isNew ? `Crew "${groupName}" created! Share your code: ${groupCode} 🍻` : `Joined "${groupName}" as ${name}! 🍺`, 4000);
+
+  // Prompt for notifications after showing main screen
+  if (permission === 'default') {
+    setTimeout(() => {
+      document.getElementById('notifBanner').classList.add('show');
+    }, 1500);
+  }
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ===== EVENT LISTENERS =====
+document.getElementById('createBtn').addEventListener('click', async () => {
+  const name = document.getElementById('nameInput').value.trim();
+  const gName = document.getElementById('newGroupInput').value.trim();
+  if (!name) { showToast('⚠️ Enter your name!'); return; }
+  if (!gName) { showToast('⚠️ Name your crew!'); return; }
+  await joinCrewFlow(genCode(), name, gName, true);
+});
+
+document.getElementById('joinBtn').addEventListener('click', async () => {
+  const name = document.getElementById('nameInput').value.trim();
+  const code = document.getElementById('joinCodeInput').value.trim().toUpperCase();
+  if (!name) { showToast('⚠️ Enter your name!'); return; }
+  if (code.length < 4) { showToast('⚠️ Enter a valid crew code!'); return; }
+  await joinCrewFlow(code, name, code, false);
+});
+
+document.getElementById('joinCodeInput').addEventListener('input', function() {
+  this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g, '');
+});
+
+document.getElementById('alarmBtn').addEventListener('click', async () => {
+  if (cooldownActive) { showToast('⏳ Steady on!'); vibrate([50]); return; }
+  vibrate([100]);
+  document.getElementById('alarmBtn').style.animation = 'none';
+
+  // Broadcast to same-browser tabs
+  bcBroadcast({ type: 'ALERT', from: myName });
+  addLogEntry(myName);
+
+  // Send push to all other crew members via server
+  const result = await apiFireAlarm(groupCode, myName);
+  if (result && result.sent > 0) {
+    showToast(`🍺 Alarm sent to ${result.sent} crew member${result.sent !== 1 ? 's' : ''}!`, 3500);
+  } else if (result) {
+    showToast(`🍺 Alarm fired! (Crew members need push enabled)`, 3500);
+  } else {
+    showToast(`🍺 Alarm fired! (Server offline - same-device only)`, 3500);
+  }
+
+  startCooldown(15);
+  setTimeout(() => {
+    document.getElementById('alarmBtn').style.animation = '';
+  }, 15100);
+});
+
+document.getElementById('shareBtn').addEventListener('click', shareCode);
+
+document.getElementById('notifAllowBtn').addEventListener('click', async () => {
+  const perm = await requestNotifications();
+  if (perm === 'granted') {
+    updateNotifStatus(true);
+    showToast('🔔 Push notifications enabled!');
+    // Re-register push subscription
+    try {
+      const swReg = await navigator.serviceWorker.ready;
+      pushSubscription = await subscribeToPush(swReg);
+      if (pushSubscription) {
+        await apiJoinGroup(groupCode, myName, pushSubscription);
+      }
+    } catch(e) {}
+  } else {
+    showToast('Notifications blocked. Enable in browser settings.', 4000);
+  }
+});
+
+document.getElementById('leaveBtn').addEventListener('click', async () => {
+  if (pollInterval) clearInterval(pollInterval);
+  if (bc) bc.close();
+  await apiLeave(groupCode, myName);
+  try { window.history.replaceState({}, '', window.location.pathname); } catch(e) {}
+  sessionStorage.removeItem('banged_up_session');
+  myName = ''; groupCode = ''; groupName = '';
+  members = []; logEntries = [];
+  document.getElementById('logCard').style.display = 'none';
+  document.getElementById('logList').innerHTML = '';
+  document.getElementById('memberGrid').innerHTML = '';
+  showScreen('setupScreen');
+  showToast('👋 Left the crew');
+});
+
+// ===== INIT =====
+// Pre-fill code from URL
+try {
+  const params = new URLSearchParams(window.location.search);
+  const codeParam = params.get('code');
+  if (codeParam) {
+    document.getElementById('joinCodeInput').value = codeParam.toUpperCase();
+  }
+} catch(e) {}
+</script>
+</body>
+</html>
