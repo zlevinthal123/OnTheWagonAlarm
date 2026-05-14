@@ -34,12 +34,12 @@ body { display: flex; flex-direction: column; min-height: 100vh; min-height: -we
 .app-header .tagline { color: var(--muted); font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; margin-top: 6px; }
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: 20px; padding: 18px 16px; width: 100%; max-width: 400px; }
 .card-label { font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; letter-spacing: 0.18em; color: var(--muted); margin-bottom: 10px; }
-.input-field { width: 100%; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; color: var(--text); font-family: 'DM Sans', sans-serif; font-size: 16px; outline: none; -webkit-appearance: none; margin-bottom: 10px; display: block; }
+.input-field { width: 100%; background: var(--surface2); border: 1.5px solid var(--border); border-radius: 12px; padding: 16px; color: var(--text); font-size: 16px; outline: none; -webkit-appearance: none; margin-bottom: 10px; display: block; font-family: 'DM Sans', sans-serif; }
 .input-field:focus { border-color: var(--amber); }
 .input-field::placeholder { color: var(--muted); }
-.input-code { text-transform: uppercase; letter-spacing: 0.25em; font-size: 1.4rem; font-family: 'Bebas Neue', sans-serif; text-align: center; }
-.btn { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 18px; border: none; border-radius: 14px; font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 0.1em; cursor: pointer; -webkit-appearance: none; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
-.btn:active { opacity: 0.85; transform: scale(0.98); }
+.input-code { text-transform: uppercase; letter-spacing: 0.25em; font-size: 1.3rem; font-family: 'Bebas Neue', sans-serif; text-align: center; }
+.btn { display: flex; align-items: center; justify-content: center; width: 100%; padding: 18px; border: none; border-radius: 14px; font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; letter-spacing: 0.1em; cursor: pointer; -webkit-appearance: none; touch-action: manipulation; }
+.btn:active { opacity: 0.75; transform: scale(0.98); }
 .btn-primary { background: var(--amber); color: #0c0a08; box-shadow: 0 4px 20px var(--amber-glow); }
 .btn-ghost { background: transparent; border: 1px solid var(--border); color: var(--muted); font-size: 0.9rem; padding: 14px; }
 .divider { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 0.7rem; letter-spacing: 0.15em; width: 100%; max-width: 400px; }
@@ -47,10 +47,10 @@ body { display: flex; flex-direction: column; min-height: 100vh; min-height: -we
 #mainScreen { justify-content: flex-start; }
 .crew-banner { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 12px 16px; width: 100%; max-width: 400px; display: flex; align-items: center; justify-content: space-between; }
 .crew-info .crew-name { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: var(--amber); letter-spacing: 0.05em; line-height: 1; }
-.crew-info .crew-meta { font-size: 0.72rem; color: var(--muted); margin-top: 2px; letter-spacing: 0.08em; }
-.share-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 16px; color: var(--amber); font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem; letter-spacing: 0.08em; cursor: pointer; display: flex; align-items: center; gap: 5px; flex-shrink: 0; touch-action: manipulation; }
+.crew-info .crew-meta { font-size: 0.72rem; color: var(--muted); margin-top: 2px; }
+.share-btn { background: var(--surface2); border: 1px solid var(--border); border-radius: 10px; padding: 10px 16px; color: var(--amber); font-family: 'Bebas Neue', sans-serif; font-size: 0.9rem; cursor: pointer; touch-action: manipulation; }
 .alarm-wrap { display: flex; flex-direction: column; align-items: center; gap: 16px; padding: 10px 0; width: 100%; }
-.alarm-btn { width: min(230px, 58vw); height: min(230px, 58vw); border-radius: 50%; border: none; background: radial-gradient(circle at 38% 32%, #ff7c45, #c0392b 65%, #7b0f0f); box-shadow: 0 0 0 10px rgba(192,57,43,0.15), 0 0 0 20px rgba(192,57,43,0.07), 0 10px 50px rgba(192,57,43,0.5); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; animation: alarmPulse 3s ease-in-out infinite; -webkit-appearance: none; touch-action: manipulation; user-select: none; -webkit-user-select: none; }
+.alarm-btn { width: min(230px, 58vw); height: min(230px, 58vw); border-radius: 50%; border: none; background: radial-gradient(circle at 38% 32%, #ff7c45, #c0392b 65%, #7b0f0f); box-shadow: 0 0 0 10px rgba(192,57,43,0.15), 0 0 0 20px rgba(192,57,43,0.07), 0 10px 50px rgba(192,57,43,0.5); cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; animation: alarmPulse 3s ease-in-out infinite; -webkit-appearance: none; touch-action: manipulation; }
 .alarm-btn:active { transform: scale(0.93); animation: none; }
 .alarm-btn .alarm-icon { font-size: clamp(2.8rem, 10vw, 4rem); line-height: 1; }
 .alarm-btn .alarm-line1, .alarm-btn .alarm-line2 { font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.1rem, 4.5vw, 1.5rem); letter-spacing: 0.1em; color: white; text-shadow: 0 2px 8px rgba(0,0,0,0.5); line-height: 1; }
@@ -77,7 +77,7 @@ body { display: flex; flex-direction: column; min-height: 100vh; min-height: -we
 .notif-banner.show { display: flex; }
 .notif-banner-text { font-size: 0.82rem; color: var(--text); line-height: 1.4; flex: 1; }
 .notif-banner-text strong { color: var(--amber); }
-.notif-allow-btn { background: var(--amber); color: #0c0a08; border: none; border-radius: 8px; padding: 10px 14px; font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; letter-spacing: 0.08em; cursor: pointer; flex-shrink: 0; touch-action: manipulation; }
+.notif-allow-btn { background: var(--amber); color: #0c0a08; border: none; border-radius: 8px; padding: 10px 14px; font-family: 'Bebas Neue', sans-serif; font-size: 0.85rem; cursor: pointer; flex-shrink: 0; touch-action: manipulation; }
 .toast { position: fixed; bottom: max(24px, var(--safe-bottom)); left: 50%; transform: translateX(-50%) translateY(100px); background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: 11px 20px; border-radius: 50px; font-size: 0.85rem; z-index: 2000; transition: transform 0.3s cubic-bezier(.175,.885,.32,1.275); white-space: nowrap; max-width: 90vw; text-align: center; pointer-events: none; }
 .toast.show { transform: translateX(-50%) translateY(0); }
 .status-bar { display: flex; align-items: center; gap: 6px; font-size: 0.7rem; color: var(--muted); padding: 4px 0; }
@@ -87,44 +87,44 @@ body { display: flex; flex-direction: column; min-height: 100vh; min-height: -we
 </style>
 </head>
 <body>
+
 <div class="screen active" id="setupScreen">
   <div class="app-header">
     <h1>🍺 Banged Up<br>Alarm</h1>
     <p class="tagline">Alert your crew when it's going off</p>
   </div>
   <div class="card">
-    <div class="card-label">👤 Your Name</div>
-    <input type="text" class="input-field" id="nameInput" placeholder="What do they call you?" maxlength="20" autocomplete="off" autocorrect="off">
+    <div class="card-label">🍻 Create a New Crew</div>
+    <input type="text" class="input-field" id="createNameInput" placeholder="Your name" maxlength="20" autocomplete="off" autocorrect="off" autocapitalize="words">
+    <input type="text" class="input-field" id="createCrewInput" placeholder="Crew name e.g. The Lads" maxlength="28" autocomplete="off" autocorrect="off">
+    <button class="btn btn-primary" onclick="handleCreate()">🍺 Create Crew</button>
   </div>
+  <div class="divider">OR</div>
   <div class="card">
-    <div class="card-label">🍻 Start a New Crew</div>
-    <input type="text" class="input-field" id="newGroupInput" placeholder="e.g. The Lads, Friday Squad..." maxlength="28" autocomplete="off" autocorrect="off">
-    <button class="btn btn-primary" id="createBtn">🍺 Create Crew</button>
-  </div>
-  <div class="divider">OR JOIN EXISTING CREW</div>
-  <div class="card">
-    <div class="card-label">🔑 Enter Crew Code</div>
-    <input type="text" class="input-field input-code" id="joinCodeInput" placeholder="ABC123" maxlength="6" autocomplete="off" autocorrect="off" autocapitalize="characters" inputmode="text">
-    <button class="btn btn-primary" id="joinBtn">Join Crew</button>
+    <div class="card-label">🔑 Join an Existing Crew</div>
+    <input type="text" class="input-field" id="joinNameInput" placeholder="Your name" maxlength="20" autocomplete="off" autocorrect="off" autocapitalize="words">
+    <input type="text" class="input-field input-code" id="joinCodeInput" placeholder="CREW CODE" maxlength="6" autocomplete="off" autocorrect="off" autocapitalize="characters" inputmode="text" oninput="this.value=this.value.toUpperCase().replace(/[^A-Z0-9]/g,'')">
+    <button class="btn btn-primary" onclick="handleJoin()">Join Crew</button>
   </div>
 </div>
+
 <div class="screen" id="mainScreen">
   <div class="crew-banner">
     <div class="crew-info">
-      <div class="crew-name" id="crewNameDisplay">The Lads</div>
-      <div class="crew-meta">Code: <span id="crewCodeDisplay" style="color:var(--amber);letter-spacing:0.15em;font-weight:700">------</span></div>
+      <div class="crew-name" id="crewNameDisplay"></div>
+      <div class="crew-meta">Code: <span id="crewCodeDisplay" style="color:var(--amber);letter-spacing:0.15em;font-weight:700"></span></div>
     </div>
-    <button class="share-btn" id="shareBtn">📤 Share</button>
+    <button class="share-btn" onclick="shareCode()">📤 Share</button>
   </div>
   <div class="notif-banner" id="notifBanner">
     <div class="notif-banner-text">
       <strong>🔔 Enable push notifications</strong><br>
       So your crew can alert you even when the app is closed.
     </div>
-    <button class="notif-allow-btn" id="notifAllowBtn">Enable</button>
+    <button class="notif-allow-btn" onclick="enableNotifs()">Enable</button>
   </div>
   <div class="alarm-wrap">
-    <button class="alarm-btn" id="alarmBtn">
+    <button class="alarm-btn" onclick="fireAlarm()">
       <span class="alarm-icon">🍺</span>
       <span class="alarm-line1">I'M GETTING</span>
       <span class="alarm-line2">BANGED UP</span>
@@ -155,71 +155,56 @@ body { display: flex; flex-direction: column; min-height: 100vh; min-height: -we
     <div class="log-title">📣 Alert History</div>
     <div class="log-list" id="logList"></div>
   </div>
-  <button class="btn btn-ghost" id="leaveBtn" style="max-width:400px">Leave Crew</button>
+  <button class="btn btn-ghost" onclick="leaveCrew()" style="max-width:400px">Leave Crew</button>
 </div>
+
 <div class="toast" id="toast"></div>
+
 <script>
 const SERVER_URL = window.location.origin;
-const VAPID_PUBLIC_KEY = 'BDum4QWv0OFl4X-zAEu5I1_rF3B_GxQ7f7mx0BEkULmcznlA6FlsF3L9qNHvXn29HXU5cuAyzOXh_qCZJflqraY';
+const VAPID_KEY = 'BDum4QWv0OFl4X-zAEu5I1_rF3B_GxQ7f7mx0BEkULmcznlA6FlsF3L9qNHvXn29HXU5cuAyzOXh_qCZJflqraY';
 let myName = '', groupCode = '', groupName = '';
-let pushSubscription = null, pollInterval = null, cooldownActive = false;
-let members = [], logEntries = [];
-let bc = null;
+let pushSub = null, pollInterval = null, cooldownActive = false;
+let members = [], bc = null;
 function genCode() { return Math.random().toString(36).substring(2,8).toUpperCase(); }
 function saveSession() { try { sessionStorage.setItem('bua', JSON.stringify({myName,groupCode,groupName})); } catch(e){} }
-function showToast(msg, dur=3000) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(t._t); t._t = setTimeout(()=>t.classList.remove('show'), dur); }
-function vibrate(p) { try { navigator.vibrate && navigator.vibrate(p); } catch(e){} }
-function formatTime() { return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}); }
-function onTap(id, fn) {
-  const el = document.getElementById(id);
-  let tapped = false;
-  el.addEventListener('touchend', function(e) { e.preventDefault(); if (tapped) return; tapped = true; setTimeout(()=> tapped = false, 300); fn(); }, {passive: false});
-  el.addEventListener('click', function() { if (tapped) return; fn(); });
-}
-function urlBase64ToUint8Array(b64) { const pad = '='.repeat((4 - b64.length%4)%4); const base64 = (b64+pad).replace(/-/g,'+').replace(/_/g,'/'); return Uint8Array.from(atob(base64), c=>c.charCodeAt(0)); }
-async function registerSW() { if (!('serviceWorker' in navigator)) return null; try { return await navigator.serviceWorker.register('/sw.js'); } catch(e) { return null; } }
-async function subscribeToPush(reg) { if (!reg) return null; try { const existing = await reg.pushManager.getSubscription(); if (existing) return existing; return await reg.pushManager.subscribe({ userVisibleOnly:true, applicationServerKey: urlBase64ToUint8Array(VAPID_PUBLIC_KEY) }); } catch(e) { return null; } }
-async function api(path, body) { try { const opts = body ? { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) } : {}; const r = await fetch(SERVER_URL + path, opts); return r.ok ? await r.json() : null; } catch(e) { return null; } }
-function showScreen(id) { document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active')); document.getElementById(id).classList.add('active'); }
-function renderMembers() {
-  const grid = document.getElementById('memberGrid'); const count = document.getElementById('memberCount');
-  if (!members.length) { grid.innerHTML = '<div style="color:var(--muted);font-size:0.82rem;width:100%">Share your code to get the crew in!</div>'; count.textContent = '0 online'; return; }
-  count.textContent = members.length + ' online';
-  grid.innerHTML = members.map(n => `<div class="member-chip ${n===myName?'you':''}"><div class="dot"></div>${n}${n===myName?' <span style="font-size:0.65rem;opacity:0.7">(you)</span>':''}</div>`).join('');
-}
-function addLogEntry(name) { const logCard = document.getElementById('logCard'); const logList = document.getElementById('logList'); logCard.style.display = 'block'; const el = document.createElement('div'); el.className = 'log-entry'; el.innerHTML = `🍺 <span><strong>${name}</strong> got banged up</span><span class="log-time">${formatTime()}</span>`; logList.prepend(el); if (logList.children.length > 15) logList.lastElementChild.remove(); }
-function showInAppAlert(fromName) { vibrate([200,100,200,100,400]); addLogEntry(fromName); const t = document.getElementById('toast'); t.innerHTML = `🍺 <strong>${fromName}</strong> is getting banged up! Time to get on the wagon! 🛒`; t.style.cssText = 'max-width:88vw;padding:14px 20px;font-size:0.9rem;background:#1a0f00;border-color:var(--amber);white-space:normal;'; t.classList.add('show'); clearTimeout(t._t); t._t = setTimeout(()=>{ t.classList.remove('show'); t.style.cssText=''; }, 6000); }
-function updateNotifStatus(granted) { document.getElementById('notifIcon').textContent = granted ? '🔔' : '🔕'; document.getElementById('notifText').textContent = granted ? 'Notifications on' : 'Notifications off'; document.getElementById('notifText').style.color = granted ? 'var(--green)' : 'var(--muted)'; if (granted) document.getElementById('notifBanner').classList.remove('show'); else if (Notification.permission !== 'denied') document.getElementById('notifBanner').classList.add('show'); }
-function updateConnectionStatus(ok) { document.getElementById('statusDot').className = 'status-dot ' + (ok ? 'connected' : 'error'); document.getElementById('statusText').textContent = ok ? 'In crew as ' + myName : 'Reconnecting...'; }
-function startCooldown(secs=15) { cooldownActive = true; const ring = document.getElementById('cooldownRing'); const fill = document.getElementById('cooldownFill'); const label = document.getElementById('cooldownLabel'); ring.style.display = 'block'; fill.style.transition = 'none'; fill.style.width = '100%'; let rem = secs; const tick = setInterval(()=>{ rem--; label.textContent='Steady on... '+rem+'s'; if(rem<=0){clearInterval(tick);cooldownActive=false;ring.style.display='none';} }, 1000); setTimeout(()=>{ fill.style.transition='width '+secs+'s linear'; fill.style.width='0%'; }, 50); }
-function setupBroadcast() { if (!window.BroadcastChannel) return; if (bc) bc.close(); bc = new BroadcastChannel('bua_' + groupCode); bc.onmessage = e => { if (e.data.type==='ALERT' && e.data.from!==myName) showInAppAlert(e.data.from); }; }
-async function joinCrewFlow(code, name, gName, isNew) {
+function showToast(msg, dur) { dur = dur||3000; const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(t._t); t._t = setTimeout(function(){ t.classList.remove('show'); }, dur); }
+function vibe(p) { try { if(navigator.vibrate) navigator.vibrate(p); } catch(e){} }
+function ftime() { return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}); }
+async function api(path, body) { try { const r = await fetch(SERVER_URL + path, body ? { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) } : {}); return r.ok ? r.json() : null; } catch(e) { return null; } }
+function showScreen(id) { document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); }); document.getElementById(id).classList.add('active'); }
+function renderMembers() { const grid = document.getElementById('memberGrid'); const count = document.getElementById('memberCount'); if (!members.length) { grid.innerHTML = '<div style="color:var(--muted);font-size:0.82rem;width:100%">Share your code to get the crew in!</div>'; count.textContent = '0 online'; return; } count.textContent = members.length + ' online'; grid.innerHTML = members.map(function(n) { return '<div class="member-chip ' + (n===myName?'you':'') + '"><div class="dot"></div>' + n + (n===myName?' <span style="font-size:0.65rem;opacity:0.7">(you)</span>':'') + '</div>'; }).join(''); }
+function addLog(name) { document.getElementById('logCard').style.display = 'block'; const el = document.createElement('div'); el.className = 'log-entry'; el.innerHTML = '🍺 <span><strong>' + name + '</strong> got banged up</span><span class="log-time">' + ftime() + '</span>'; const list = document.getElementById('logList'); list.prepend(el); if (list.children.length > 15) list.lastElementChild.remove(); }
+function showAlert(fromName) { vibe([200,100,200,100,400]); addLog(fromName); const t = document.getElementById('toast'); t.innerHTML = '🍺 <strong>' + fromName + '</strong> is getting banged up! Time to get on the wagon! 🛒'; t.style.cssText = 'max-width:88vw;padding:14px 20px;font-size:0.9rem;background:#1a0f00;border-color:var(--amber);white-space:normal;pointer-events:none;position:fixed;bottom:max(24px,env(safe-area-inset-bottom,0px));left:50%;transform:translateX(-50%) translateY(0);border-radius:50px;z-index:2000;text-align:center;'; clearTimeout(t._t); t._t = setTimeout(function(){ t.style.cssText = ''; t.classList.remove('show'); }, 7000); }
+function updateNotif(granted) { document.getElementById('notifIcon').textContent = granted ? '🔔' : '🔕'; document.getElementById('notifText').textContent = granted ? 'Notifications on' : 'Notifications off'; document.getElementById('notifText').style.color = granted ? 'var(--green)' : 'var(--muted)'; const banner = document.getElementById('notifBanner'); if (granted) banner.classList.remove('show'); else if (typeof Notification !== 'undefined' && Notification.permission !== 'denied') banner.classList.add('show'); }
+function updateConn(ok) { document.getElementById('statusDot').className = 'status-dot ' + (ok ? 'connected' : 'error'); document.getElementById('statusText').textContent = ok ? 'In crew as ' + myName : 'Reconnecting...'; }
+function startCooldown(secs) { secs = secs||15; cooldownActive = true; const ring = document.getElementById('cooldownRing'); const fill = document.getElementById('cooldownFill'); const label = document.getElementById('cooldownLabel'); ring.style.display = 'block'; fill.style.transition = 'none'; fill.style.width = '100%'; let rem = secs; const tick = setInterval(function(){ rem--; label.textContent = 'Steady on... ' + rem + 's'; if (rem <= 0) { clearInterval(tick); cooldownActive = false; ring.style.display = 'none'; } }, 1000); setTimeout(function(){ fill.style.transition = 'width ' + secs + 's linear'; fill.style.width = '0%'; }, 50); }
+function b64ToUint8(b64) { const pad = '='.repeat((4 - b64.length%4)%4); const base64 = (b64+pad).replace(/-/g,'+').replace(/_/g,'/'); return Uint8Array.from(atob(base64), function(c){ return c.charCodeAt(0); }); }
+async function getSub() { if (!('serviceWorker' in navigator)) return null; try { const reg = await navigator.serviceWorker.register('/sw.js'); const existing = await reg.pushManager.getSubscription(); if (existing) return existing; return await reg.pushManager.subscribe({ userVisibleOnly:true, applicationServerKey: b64ToUint8(VAPID_KEY) }); } catch(e) { return null; } }
+function setupBC() { if (!window.BroadcastChannel) return; if (bc) bc.close(); bc = new BroadcastChannel('bua_' + groupCode); bc.onmessage = function(e) { if (e.data.type === 'ALERT' && e.data.from !== myName) showAlert(e.data.from); }; }
+function startPoll() { if (pollInterval) clearInterval(pollInterval); pollInterval = setInterval(async function(){ const d = await api('/group/' + groupCode); if (d) { members = d.members || []; renderMembers(); updateConn(true); } else updateConn(false); }, 8000); }
+async function doJoin(code, name, gName, isNew) {
   myName = name; groupCode = code; groupName = gName; saveSession();
-  let swReg = null; try { swReg = await registerSW(); } catch(e){}
   const perm = (typeof Notification !== 'undefined') ? Notification.permission : 'unsupported';
-  let sub = null; if (perm === 'granted' && swReg) { sub = await subscribeToPush(swReg); pushSubscription = sub; }
-  if (isNew) await api('/group/create', {code, groupName: gName});
-  const result = await api('/group/join', {code, memberName: name, subscription: sub ? JSON.parse(JSON.stringify(sub)) : null});
+  let sub = null; if (perm === 'granted') { sub = await getSub(); pushSub = sub; }
+  if (isNew) await api('/group/create', { code: code, groupName: gName });
+  const result = await api('/group/join', { code: code, memberName: name, subscription: sub ? JSON.parse(JSON.stringify(sub)) : null });
   if (result) { groupName = result.groupName || gName; members = result.members || [name]; }
-  else { members = [name]; showToast('⚠️ Server unreachable — local mode only', 4000); }
+  else { members = [name]; showToast('⚠️ Server unreachable — local only', 4000); }
   document.getElementById('crewNameDisplay').textContent = groupName;
   document.getElementById('crewCodeDisplay').textContent = groupCode;
-  updateNotifStatus(perm === 'granted'); updateConnectionStatus(!!result); renderMembers(); setupBroadcast();
-  if (pollInterval) clearInterval(pollInterval);
-  pollInterval = setInterval(async()=>{ const d = await api('/group/' + groupCode); if (d) { members = d.members||[]; renderMembers(); updateConnectionStatus(true); } else updateConnectionStatus(false); }, 8000);
-  try { const u = new URL(location.href); u.searchParams.set('code',groupCode); history.replaceState({},'',u); } catch(e){}
+  updateNotif(perm === 'granted'); updateConn(!!result); renderMembers(); setupBC(); startPoll();
+  try { const u = new URL(location.href); u.searchParams.set('code', groupCode); history.replaceState({}, '', u); } catch(e){}
   showScreen('mainScreen');
-  showToast(isNew ? `Crew "${groupName}" created! Code: ${groupCode} 🍻` : `Joined "${groupName}" as ${name}! 🍺`, 4000);
-  if (perm === 'default') setTimeout(()=>document.getElementById('notifBanner').classList.add('show'), 1500);
+  showToast(isNew ? 'Crew "' + groupName + '" created! Code: ' + groupCode + ' 🍻' : 'Joined "' + groupName + '" as ' + name + '! 🍺', 4000);
+  if (perm === 'default') setTimeout(function(){ document.getElementById('notifBanner').classList.add('show'); }, 1500);
 }
-async function shareCode() { const url = new URL(location.href); url.searchParams.set('code', groupCode); const shareData = { title:'🍺 Banged Up Alarm', text:`Join my crew "${groupName}"! Code: ${groupCode}`, url: url.toString() }; if (navigator.share) { try { await navigator.share(shareData); return; } catch(e){} } try { await navigator.clipboard.writeText(url.toString()); showToast('📋 Link copied! Share it 🍺'); } catch(e) { showToast('Code: ' + groupCode + ' — share with your crew!', 5000); } }
-onTap('createBtn', async () => { const name = document.getElementById('nameInput').value.trim(); const gName = document.getElementById('newGroupInput').value.trim(); if (!name) { showToast('⚠️ Enter your name!'); return; } if (!gName) { showToast('⚠️ Name your crew!'); return; } await joinCrewFlow(genCode(), name, gName, true); });
-onTap('joinBtn', async () => { const name = document.getElementById('nameInput').value.trim(); const code = document.getElementById('joinCodeInput').value.trim().toUpperCase(); if (!name) { showToast('⚠️ Enter your name!'); return; } if (code.length < 4) { showToast('⚠️ Enter a valid crew code!'); return; } await joinCrewFlow(code, name, code, false); });
-onTap('alarmBtn', async () => { if (cooldownActive) { showToast('⏳ Steady on!'); vibrate([50]); return; } vibrate([100]); if (bc) bc.postMessage({type:'ALERT', from:myName}); addLogEntry(myName); const result = await api('/alert', {code:groupCode, fromName:myName}); if (result && result.sent > 0) showToast(`🍺 Alarm sent to ${result.sent} crew member${result.sent!==1?'s':''}!`, 3500); else showToast('🍺 Alarm fired! Get on the wagon! 🛒', 3500); startCooldown(15); });
-onTap('shareBtn', shareCode);
-onTap('notifAllowBtn', async () => { if (typeof Notification === 'undefined') { showToast('Notifications not supported on this browser'); return; } const perm = await Notification.requestPermission(); if (perm === 'granted') { updateNotifStatus(true); showToast('🔔 Push notifications enabled!'); try { const reg = await navigator.serviceWorker.ready; pushSubscription = await subscribeToPush(reg); if (pushSubscription) await api('/group/join', {code:groupCode, memberName:myName, subscription:JSON.parse(JSON.stringify(pushSubscription))}); } catch(e){} } else { showToast('Notifications blocked — enable in browser settings', 4000); } });
-onTap('leaveBtn', async () => { if (pollInterval) clearInterval(pollInterval); if (bc) bc.close(); await api('/group/leave', {code:groupCode, memberName:myName}); try { history.replaceState({},'',location.pathname); } catch(e){} sessionStorage.removeItem('bua'); myName=''; groupCode=''; groupName=''; members=[]; logEntries=[]; document.getElementById('logCard').style.display='none'; document.getElementById('logList').innerHTML=''; document.getElementById('memberGrid').innerHTML=''; showScreen('setupScreen'); showToast('👋 Left the crew'); });
-document.getElementById('joinCodeInput').addEventListener('input', function() { this.value = this.value.toUpperCase().replace(/[^A-Z0-9]/g,''); });
+function handleCreate() { const name = document.getElementById('createNameInput').value.trim(); const gName = document.getElementById('createCrewInput').value.trim(); if (!name) { showToast('⚠️ Enter your name!'); return; } if (!gName) { showToast('⚠️ Enter a crew name!'); return; } doJoin(genCode(), name, gName, true); }
+function handleJoin() { const name = document.getElementById('joinNameInput').value.trim(); const code = document.getElementById('joinCodeInput').value.trim().toUpperCase(); if (!name) { showToast('⚠️ Enter your name!'); return; } if (code.length < 4) { showToast('⚠️ Enter a valid crew code!'); return; } doJoin(code, name, code, false); }
+function fireAlarm() { if (cooldownActive) { showToast('⏳ Steady on!'); vibe([50]); return; } vibe([100]); if (bc) bc.postMessage({ type: 'ALERT', from: myName }); addLog(myName); api('/alert', { code: groupCode, fromName: myName }).then(function(result){ if (result && result.sent > 0) showToast('🍺 Alarm sent to ' + result.sent + ' crew member' + (result.sent!==1?'s':'') + '!', 3500); else showToast('🍺 Alarm fired! Get on the wagon! 🛒', 3500); }); startCooldown(15); }
+function shareCode() { const url = new URL(location.href); url.searchParams.set('code', groupCode); const shareData = { title: '🍺 Banged Up Alarm', text: 'Join my crew "' + groupName + '"! Code: ' + groupCode, url: url.toString() }; if (navigator.share) { navigator.share(shareData).catch(function(){}); return; } if (navigator.clipboard) { navigator.clipboard.writeText(url.toString()).then(function(){ showToast('📋 Link copied! Share it 🍺'); }).catch(function(){ showToast('Code: ' + groupCode, 5000); }); } else { showToast('Code: ' + groupCode + ' — share with your crew!', 5000); } }
+function enableNotifs() { if (typeof Notification === 'undefined') { showToast('Notifications not supported here'); return; } Notification.requestPermission().then(function(perm){ if (perm === 'granted') { updateNotif(true); showToast('🔔 Push notifications enabled!'); getSub().then(function(sub){ if (sub) { pushSub = sub; api('/group/join', { code: groupCode, memberName: myName, subscription: JSON.parse(JSON.stringify(sub)) }); } }); } else { showToast('Notifications blocked — enable in browser settings', 4000); } }); }
+function leaveCrew() { if (pollInterval) clearInterval(pollInterval); if (bc) bc.close(); api('/group/leave', { code: groupCode, memberName: myName }); try { history.replaceState({}, '', location.pathname); } catch(e){} sessionStorage.removeItem('bua'); myName = ''; groupCode = ''; groupName = ''; members = []; document.getElementById('logCard').style.display = 'none'; document.getElementById('logList').innerHTML = ''; document.getElementById('memberGrid').innerHTML = ''; showScreen('setupScreen'); showToast('👋 Left the crew'); }
 try { const code = new URLSearchParams(location.search).get('code'); if (code) document.getElementById('joinCodeInput').value = code.toUpperCase(); } catch(e){}
 </script>
 </body>
